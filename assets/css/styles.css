@@ -1,0 +1,78 @@
+:root {
+  --green-500: #22c55e;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+ font-family: Tahoma, sans-serif;
+}
+
+/* Ẩn nội dung tiếng Việt khi body có class "en" */
+body.en .vn {
+  display: none;
+}
+
+/* Ẩn nội dung tiếng Anh khi body có class "vn" */
+body.vn .en {
+  display: none;
+}
+
+.relative {
+  position: relative;
+}
+.absolute {
+  position: absolute;
+}
+
+.hidden {
+  display: none;
+}
+
+.border-circle {
+  border-radius: 50%;
+}
+
+.text-black {
+  color: #000;
+}
+.text-green-500 {
+  color: var(--green-500);
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.m-0 {
+  margin: 0;
+}
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+#canvas {
+  background-color: #457b92;
+}
+
+.game-size {
+  width: 1200px;
+  height: 570px;
+}
+
+/* for timer view */
+.timer-wrapper {
+  background-color: #fff;
+  width: 84px;
+  top: 10px;
+  left: 33px;
+  padding: 5px 10px;
+  border-radius: 5px;
+}

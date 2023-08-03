@@ -1,0 +1,74 @@
+
+
+/* for Waiting list table */
+.waiting-list {
+  top: 70px;
+  left: 150px;
+}
+#total-waiting-ducks {
+  display: inline-block;
+  width: 50px;
+  padding: 0 5px;
+  background: #fff;
+  text-align: center;
+  border-radius: 5px;
+}
+#table-wrapper {
+  height: 364px;
+  overflow-y: auto;
+}
+.waiting-list table {
+  background-color: transparent;
+  width: 900px;
+  margin: 0 auto;
+  /* border: 5px solid #6ea8fe; */
+}
+.waiting-list table.only-thead {
+  border-top-left-radius: 55px;
+  border-top-right-radius: 20px;
+}
+.waiting-list table.table-waiting-list {
+  margin-top: -2px;
+}
+.waiting-list td, .waiting-list th {
+  font-size: 20px;
+  line-height: 1.5;
+  padding: 5px 10px;
+}
+.waiting-list thead tr:first-child {
+  background-color: #ffcd39;
+  text-align: right;
+}
+.waiting-list thead tr:first-child th {
+  border-top-left-radius: 55px;
+  border-top-right-radius: 15px;
+}
+.waiting-list thead tr:nth-child(2) {
+  background-color: #6ea8fe;
+  text-align: left;
+}
+.waiting-list tr {
+  height: 50px;
+  background-color: #cfdffc;
+}
+.waiting-list tr:hover {
+  background-color: #fff3cd;
+}
+.waiting-list td:first-child, .waiting-list th:first-child {
+  text-align: center;
+  width: 60px;
+}
+.waiting-list td:nth-child(2) {
+  display: flex;
+  align-items: center;
+}
+.waiting-list th:nth-child(3), .waiting-list td:nth-child(3) {
+  width: 260px;
+  max-width: 260px;
+}
+.waiting-list .avatar {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+  border-radius: 50%;
+}

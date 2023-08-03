@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Duck Race</title>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.js"></script>
+  <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+  <script src="https://code.createjs.com/1.0.0/easeljs.min.js"></script>
+  <script src="https://code.createjs.com/1.0.0/tweenjs.min.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="/js/useSelectLangs.js"></script>
+  <script type="module" src="./main.js"></script>
+
+  <link rel="stylesheet" href="./assets/css/styles.css">
+  <link rel="stylesheet" href="./assets/css/waiting-list.css">
+  <link rel="stylesheet" href="./assets/css/winners.css">
+</head>
+
+<body class="m-0 en">
+  <div class="relative game-wrapper game-size mx-auto">
+    <canvas id="canvas" width="1200" height="570"></canvas>
+
+    <!-- Timer view -->
+    <div class="timer-wrapper absolute">
+      <span id="id-timer"></span>
+    </div>
+
+    <!-- Action buttons for testing -->
+    <div style="margin: 10px 0;">
+      <button onclick="$app.prepare()">
+        <span class="en">Prepare</span>
+        <span class="vn">Khởi động</span>
+      </button>
+      <button onclick="$app.start()">
+        <span class="en">Start Game</span>
+        <span class="vn">Bắt đầu</span>
+      </button>
+      <button onclick="$app.reset()">
+        <span class="en">Reset Game</span>
+        <span class="vn">Đặt lại</span>
+      </button>
+      <button onclick="$app.onToggleWaitingList()">
+        <span class="en">Toggle Waiting List</span>
+        <span class="vn">Hiển thị / Ẩn bảng người chơi</span>
+      </button>
+      <button onclick="$app.onToggleWinnerList()">
+        <span class="en">Toggle Winners List</span>
+        <span class="vn">Hiển thị / Ẩn bảng kết quả</span>
+      </button>
+
+      <!-- Dropdown for language selection -->
+      <select id="select-languages">
+        <option value="en">English</option>
+        <option value="vn">Tiếng Việt</option>
+      </select>
+    </div>
+
+    <!-- Waiting list -->
+    <div class="waiting-list show absolute">
+      <table class="only-thead">
+        <thead>
+          <tr>
+            <th colspan="3" style="text-align: right;">
+              <span class="en">Total waiting ducks:</span>
+              <span class="vn">Tổng số vịt đã vào:</span>
+              <span id="total-waiting-ducks">
+                0
+              </span>
+            </th>
+          </tr>
+          <tr>
+            <th>#</th>
+            <th>
+              <span class="en">Player</span>
+              <span class="vn">Người chơi</span>
+            </th>
+            <th>
+              <span class="en">Duck creation time</span>
+              <span class="vn">Thời điểm tạo vịt</span>
+            </th>
+          </tr>
+        </thead>
+      </table>
+
+      <div id="table-wrapper" class="table-waiting-list-wrapper hide-scrollbar">
+        <table class="table-waiting-list">
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>
+                <!--
+                  <img style="visibility: hidden;" src="" alt="" class="avatar">
+                  <span style="visibility: hidden;">PlayerName</span>
+                -->
+              </td>
+              <td>
+                <!--
+                  <span style="visibility: hidden;">03/08/2023, 01:51:01 AM</span>
+                -->
+              </td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>6</td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>7</td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Winners view -->
+    <div class="winners-list absolute">
+      <div class="title">
+        🎉 Winners 🎉
+      </div>
+      <!-- WINNER NO.1 -->
+      <div class="winner winner-1">
+        <!-- background ranking order -->
+        <svg class="bg-ranking-order" xmlns="http://www.w3.org/2000/svg" width="57" height="52" viewBox="0 0 57 52" fill="none">
+          <path d="M0.0249023 50.3974V0.226562H56.6687V50.3974C56.6687 51.3952 55.7074 52.1113 54.7514 51.8257L28.3468 43.9381L1.94218 51.8257C0.986139 52.1113 0.0249023 51.3952 0.0249023 50.3974Z" fill="#28A745">
+          </path>
+        </svg>
+
+        <!-- ranking order -->
+        <div class="ranking-order">
+          1
+        </div>
+
+        <div class="outter-wrapper">
+          <!-- avatar & social icon -->
+          <div class="avatar avatar-size border-circle">
+            <!-- avatar -->
+            <!-- FIXME: change img src -->
+            <img src="https://scontent-hkg4-1.xx.fbcdn.net/v/t1.6435-1/122978269_110465687525249_2551976941410255993_n.jpg?stp=c28.0.111.111a_dst-jpg_p111x111&amp;_nc_cat=111&amp;ccb=1-7&amp;_nc_sid=7206a8&amp;_nc_ohc=2c3ELYfiVWgAX-xBLPA&amp;_nc_ht=scontent-hkg4-1.xx&amp;oh=00_AfCUWPkhxXIh5Da_s8kCrwAT3FUAOsoqVyN_E616bcCTAA&amp;oe=64E98E40" class="avatar-img avatar-size border-circle">
+            <!-- social icon (facebook/ youtube/ tiktok) -->
+            <div class="social-icon border-circle">
+              <!-- FIXME: change img src -->
+              <img src="/assets/img/social-network/facebook.png" class="social-icon-img">
+            </div>
+          </div>
+
+
+          <div class="content-wrapper">
+            <!-- FIXME: change player name -->
+            <div class="player-name text-black">
+              BinhBdn
+            </div>
+            <div class="text-green-500">
+              <!-- FIXME: change number of comments -->
+              <span class="comments-number">
+                20
+              </span>
+              <span class="font-medium">
+                comments
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WINNER NO.1, 2 ... -->
+      <div class="winners">
+        <!-- WINNER NO.2 -->
+        <div class="winner winner-2">
+          <!-- background ranking order -->
+          <svg class="bg-ranking-order" xmlns="http://www.w3.org/2000/svg" width="57" height="52" viewBox="0 0 57 52" fill="none">
+            <path d="M0.0249023 50.3974V0.226562H56.6687V50.3974C56.6687 51.3952 55.7074 52.1113 54.7514 51.8257L28.3468 43.9381L1.94218 51.8257C0.986139 52.1113 0.0249023 51.3952 0.0249023 50.3974Z" fill="#28A745">
+            </path>
+          </svg>
+
+          <!-- ranking order -->
+          <div class="ranking-order">
+            2
+          </div>
+
+          <div class="outter-wrapper">
+            <!-- avatar & social icon -->
+            <div class="avatar avatar-size border-circle">
+              <!-- avatar -->
+              <!-- FIXME: change img src -->
+              <img src="https://scontent-hkg4-1.xx.fbcdn.net/v/t1.6435-1/122978269_110465687525249_2551976941410255993_n.jpg?stp=c28.0.111.111a_dst-jpg_p111x111&amp;_nc_cat=111&amp;ccb=1-7&amp;_nc_sid=7206a8&amp;_nc_ohc=2c3ELYfiVWgAX-xBLPA&amp;_nc_ht=scontent-hkg4-1.xx&amp;oh=00_AfCUWPkhxXIh5Da_s8kCrwAT3FUAOsoqVyN_E616bcCTAA&amp;oe=64E98E40" class="avatar-img avatar-size border-circle">
+              <!-- social icon (facebook/ youtube/ tiktok) -->
+              <div class="social-icon border-circle">
+                <!-- FIXME: change img src -->
+                <img src="/assets/img/social-network/facebook.png" class="social-icon-img">
+              </div>
+            </div>
+
+
+            <div class="content-wrapper">
+              <!-- FIXME: change player name -->
+              <div class="player-name text-black">
+                Nguyen Van Hiep
+              </div>
+              <div class="text-green-500">
+                <!-- FIXME: change number of comments -->
+                <span class="comments-number">
+                  15
+                </span>
+                <span class="font-medium">
+                  comments
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- WINNER NO.3 -->
+        <div class="winner winner-3">
+          <!-- background ranking order -->
+          <svg class="bg-ranking-order" xmlns="http://www.w3.org/2000/svg" width="57" height="52" viewBox="0 0 57 52" fill="none">
+            <path d="M0.0249023 50.3974V0.226562H56.6687V50.3974C56.6687 51.3952 55.7074 52.1113 54.7514 51.8257L28.3468 43.9381L1.94218 51.8257C0.986139 52.1113 0.0249023 51.3952 0.0249023 50.3974Z" fill="#28A745">
+            </path>
+          </svg>
+
+          <!-- ranking order -->
+          <div class="ranking-order">
+            3
+          </div>
+
+          <div class="outter-wrapper">
+            <!-- avatar & social icon -->
+            <div class="avatar avatar-size border-circle">
+              <!-- avatar -->
+              <!-- FIXME: change img src -->
+              <img src="https://scontent-hkg4-1.xx.fbcdn.net/v/t1.6435-1/122978269_110465687525249_2551976941410255993_n.jpg?stp=c28.0.111.111a_dst-jpg_p111x111&amp;_nc_cat=111&amp;ccb=1-7&amp;_nc_sid=7206a8&amp;_nc_ohc=2c3ELYfiVWgAX-xBLPA&amp;_nc_ht=scontent-hkg4-1.xx&amp;oh=00_AfCUWPkhxXIh5Da_s8kCrwAT3FUAOsoqVyN_E616bcCTAA&amp;oe=64E98E40" class="avatar-img avatar-size border-circle">
+              <!-- social icon (facebook/ youtube/ tiktok) -->
+              <div class="social-icon border-circle">
+                <!-- FIXME: change img src -->
+                <img src="/assets/img/social-network/facebook.png" class="social-icon-img">
+              </div>
+            </div>
+
+
+            <div class="content-wrapper">
+              <!-- FIXME: change player name -->
+              <div class="player-name text-black">
+                Nguyen NV
+              </div>
+              <div class="text-green-500">
+                <!-- FIXME: change number of comments -->
+                <span class="comments-number">
+                  9
+                </span>
+                <span class="font-medium">
+                  comments
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
